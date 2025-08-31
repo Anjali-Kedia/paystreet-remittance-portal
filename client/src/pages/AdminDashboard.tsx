@@ -320,7 +320,7 @@ export default function AdminDashboard() {
                         </Badge>
                       </td>
                       <td className="px-4 py-3">
-                        <Badge className="bg-white">{t.status}</Badge>
+                        <Badge className="bg-black">{t.status}</Badge>
                       </td>
                     </tr>
                   ))}

@@ -19,9 +19,15 @@ function Home() {
     <div className="min-h-screen bg-gray-50">
       <main className="mx-auto max-w-6xl px-4 py-12">
         <h1 className="text-3xl font-bold">Remittance Portal</h1>
-        <p className="mt-2 text-gray-600">
-          Start by creating an account or logging in.
-        </p>
+        {!user ? (
+          <p className="mt-2 text-gray-600">
+            Start by creating an account or logging in.
+          </p>
+        ) : (
+          <p className="mt-2 text-gray-600">
+            Welcome back, {user.fullName}! You can now manage beneficiaries, transfer funds, and view transactions.
+          </p>
+        )}
         {user && user.kycStatus !== "APPROVED" && (
           <div className="mt-6">
             <div className="text-sm font-medium mb-2">

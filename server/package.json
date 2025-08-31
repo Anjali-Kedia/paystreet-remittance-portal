@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "start": "prisma db push && node src/index.js",
     "prisma:push": "prisma db push",
     "postinstall": "prisma generate",
     "prisma:test:push": "dotenv -e .env.test -- prisma db push --force-reset",
