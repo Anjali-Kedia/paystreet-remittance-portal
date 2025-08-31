@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum KycStatus {
+  PENDING
+  APPROVED
+  REVIEW
+  REJECTED
+}
+
+model User {
+  id            String        @id @default(uuid())
+  fullName      String
+  email         String        @unique
+  passwordHash  String
+  accountNumber String        @unique
+  role          Role          @default(USER)
+  createdAt     DateTime      @default(now())
+  kycStatus     KycStatus     @default(PENDING)
+  kycCheckedAt  DateTime?
+  Beneficiary   Beneficiary[]
+  Transaction   Transaction[]
+}
+
+model Beneficiary {
+  id          String        @id @default(uuid())
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  bankAccount String
+  country     String
+  currency    String
+  createdAt   DateTime      @default(now())
+  Transaction Transaction[]
+
+  @@index([userId, name])
+}
+
+model Transaction {
+  id            String      @id @default(uuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  beneficiary   Beneficiary @relation(fields: [beneficiaryId], references: [id])
+  beneficiaryId String
+
+  amountFrom     Float
+  amountTo       Float
+  sourceCurrency String
+  targetCurrency String
+  fxRate         Float
+  fee            Float
+  status         String
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([beneficiaryId])
+}
