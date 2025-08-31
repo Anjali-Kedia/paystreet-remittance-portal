@@ -18,25 +18,25 @@ export function createApp() {
   const app = express();
 
   // 🔒 Manual CORS (works well with Express 5 & preflight)
-  const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
+  const allowList = (process.env.CORS_ORIGIN || "http://localhost:3000")
+    .split(",")
+    .map((s) => s.trim());
+
   app.use((req, res, next) => {
     const origin = req.headers.origin;
-    if (origin === allowedOrigin) {
-      res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+    if (origin && allowList.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
       res.setHeader("Vary", "Origin");
     }
     res.setHeader(
       "Access-Control-Allow-Methods",
-      "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+      "GET,POST,PUT,PATCH,DELETE,OPTIONS"
     );
     const reqHeaders = req.headers["access-control-request-headers"];
     res.setHeader(
       "Access-Control-Allow-Headers",
-      reqHeaders || "Content-Type, Authorization",
+      reqHeaders || "Content-Type, Authorization"
     );
-    // If you switch to cookie auth later:
-    // res.setHeader('Access-Control-Allow-Credentials', 'true');
-
     if (req.method === "OPTIONS") return res.sendStatus(204);
     next();
   });
