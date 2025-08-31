@@ -5,6 +5,10 @@ A **full-stack cross-border payments platform** demo built with
 
 It includes **user onboarding, beneficiary management, money transfers with live FX rates, transaction dashboards, admin view, KYC checks, and receipts (CSV/PDF).**
 
+Hosted : https://paystreet-remittance-portal-frontend.onrender.com
+Admin credentials: admin_user@gmail.com
+@12345admin
+
 ---
 
 ## ✨ Features
